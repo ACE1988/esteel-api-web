@@ -1,0 +1,72 @@
+server:
+  port: 8081
+
+auth:
+  public-paths:
+    - /public/**
+    - /api/esteel/pub/**
+  cors-paths:
+    - /**
+  sign-key: esteel-api-web
+  expireSeconds: 604800
+  publicKey: classpath:rsa_public_key.pem
+  privateKey: classpath:rsa_private_key.pem
+  multiSignIn: false
+
+swagger:
+  name: esteel-api-web
+  title: API-WEB
+  description: API-WEB
+  url: http://esteel.io
+  version: v1
+  base-package: com.esteel.web.rest.api
+
+logging:
+  ignore:
+    trace:
+      path: /webjars,/api/esteel/pvt/1.0.0/file
+  pattern:
+    console: "%clr(%d{yyyy-MM-dd HH:mm:ss.SSS}){faint} %clr(${LOG_LEVEL_PATTERN:-%5p}) %clr(${PID:- }){magenta} %clr(---){faint} %clr([%15.15t]){faint} %clr(%-40.40logger{39}){cyan} %clr(:){faint} %X{REQ_ID} %m%n"
+  level:
+    com.sinarmas.rest.filter: DEBUG
+    com.sinarmas.common.filter: DEBUG
+#  config: classpath:logback-spring.xml
+
+dubbo:
+  application:
+    name: API-WEB
+    owner: liujie
+  registry:
+    file: ${user.home}/output/api-web.dubbo.cache
+    protocol: zookeeper
+    address: zookeeper://192.168.18.42:2181
+  protocol:
+    name: dubbo
+    payload: 10485760
+    port: -1
+  consumer:
+    timeout: 60000
+    registries: zookeeper://192.168.18.42:2181
+    check: false
+
+spring:
+  application:
+    name: esteel-api-web
+  redis:
+    database: 2
+    host: 192.168.18.41
+    port: 6379
+    password: q1w2e3r4
+    pool:
+      max-active: 10
+      max-wait: 5
+      max-idel: 2
+      min-idel: 2
+    timeout: 10000
+  messages:
+    basename: i18n/messages
+  servlet:
+    multipart:
+      enabled: true
+      max-file-size: 10MB
+      file-size-threshold: 11MB
