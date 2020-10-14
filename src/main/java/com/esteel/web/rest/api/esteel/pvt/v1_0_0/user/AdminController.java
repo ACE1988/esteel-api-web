@@ -15,10 +15,7 @@ import org.apache.dubbo.config.annotation.Reference;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.validation.annotation.Validated;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestParam;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
 import com.esteel.common.dubbo.PageResponse;
 import com.esteel.rest.common.RestResponse;
@@ -27,6 +24,7 @@ import com.esteel.web.pojo.approve.authority.AccountPageQueryRequest;
 import springfox.documentation.annotations.ApiIgnore;
 
 import javax.validation.constraints.NotNull;
+import java.security.Principal;
 
 /**
  * 运营系统-用户账号管理API
@@ -64,7 +62,8 @@ public class AdminController {
 		@ApiResponse(code = 500, message = "服务器不能完成请求") 
 	})
 	@GetMapping("/queryAccountsPage")
-	public RestResponse<PageResponse<AccountInfo>> queryAccountsPage(AccountPageQueryRequest pageRequest) {
+	public RestResponse<PageResponse<AccountInfo>> queryAccountsPage(AccountPageQueryRequest pageRequest,
+																	 @AuthenticationPrincipal @ApiIgnore User user) {
 		
 		PageResponse<AccountInfo> accountsPage = adminService.queryAccountsPage(pageRequest);
 		
@@ -84,10 +83,13 @@ public class AdminController {
 	@GetMapping("/queryAccountsPage/V2")
 	public Page<AccountInfo> queryAccountsPageV2(
 			@AuthenticationPrincipal @ApiIgnore User user,
+			final Principal principal,
 			@ApiParam(value = "账号名") @RequestParam(value = "userName",required = false) String userName,
 			@ApiParam(value = "邮箱") @RequestParam(value = "email",required = false) String email,
 			@ApiParam(value = "页码", required = true) @NotNull(message = "页码未填写") @RequestParam(value = "page_no", required = false) Integer pageNo,
 			@ApiParam(value = "页大小", required = true) @NotNull(message = "页大小未填写") @RequestParam(value = "page_size", required = false) Integer pageSize) {
+
+		String name = principal.getName();
 		return execute(() -> {
 			AdminUserRequest request = new AdminUserRequest();
 			request.setEmail(email);
