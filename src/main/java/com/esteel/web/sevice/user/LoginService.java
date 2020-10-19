@@ -12,7 +12,7 @@ import com.esteel.admin.service.UserRoleDubboService;
 import com.esteel.admin.service.request.role.AdminUserRoleRequest;
 import com.esteel.admin.service.response.role.AdminUserRoleResponse;
 import com.esteel.user.service.UserDubboService;
-import com.esteel.admin.service.request.user.LoginUserRequest;
+import com.esteel.user.service.request.admin.LoginUserRequest;
 import com.esteel.user.service.response.admin.UserResponse;
 import com.esteel.web.pojo.approve.auth.AuthInfo;
 import com.esteel.common.dubbo.DubboResponse;
@@ -140,6 +140,7 @@ public class LoginService {
 		authInfo.setUserId(loginResponse.getUserId());
 		authInfo.setUserName(loginResponse.getUserName());
 		authInfo.setEmail(loginRequest.getAccount());
+		//角色信息
 		authInfo.setRoles(userRoles.stream().map(item -> {
 			RoleInfo roleInfo = new RoleInfo();
 			roleInfo.setRoleId(item.getRoleId());
@@ -156,6 +157,7 @@ public class LoginService {
 		String token = "bearer ".concat(accessToken.getValue());
 		authInfo.setToken(token);
 
+		//角色菜单
 //		List<AdminPermissionPoJo> permissionList = new ArrayList<>();
 //		if (userRoles.getPermissions() != null) {
 //			userRoles.getPermissions().forEach((k,v) -> {
