@@ -8,12 +8,19 @@ import java.util.stream.Collectors;
 
 import javax.annotation.Resource;
 
+import com.esteel.admin.service.UserRoleDubboService;
+import com.esteel.admin.service.request.role.AdminUserRoleRequest;
+import com.esteel.admin.service.response.role.AdminUserRoleResponse;
+import com.esteel.user.service.UserDubboService;
+import com.esteel.admin.service.request.user.LoginUserRequest;
+import com.esteel.user.service.response.admin.UserResponse;
 import com.esteel.web.pojo.approve.auth.AuthInfo;
 import com.esteel.common.dubbo.DubboResponse;
-import com.esteel.user.service.AdminUserDubboService;
-import com.esteel.user.service.request.admin.AdminUserLoginRequest;
-import com.esteel.user.service.response.admin.AdminLoginResponse;
+import com.esteel.admin.service.AdminUserDubboService;
+import com.esteel.admin.service.request.user.AdminUserLoginRequest;
+import com.esteel.admin.service.response.user.AdminLoginResponse;
 import com.esteel.web.pojo.approve.auth.LoginRequest;
+import com.esteel.web.pojo.approve.auth.RoleInfo;
 import org.apache.dubbo.config.annotation.Reference;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.core.GrantedAuthority;
@@ -43,6 +50,12 @@ public class LoginService {
 	 */
 	@Reference(version = AdminUserDubboService.DUBBO_VERSION, interfaceClass = AdminUserDubboService.class)
 	private AdminUserDubboService adminUserDubboService;
+
+	@Reference(version =UserDubboService.DUBBO_VERSION,interfaceClass = UserDubboService.class)
+	private UserDubboService userDubboService ;
+
+	@Reference(version =UserRoleDubboService.DUBBO_VERSION,interfaceClass = UserRoleDubboService.class)
+	private UserRoleDubboService userRoleDubboService ;
 	
 	@Resource
 	AuthorizationServerTokenServices authorizationServerTokenServices;
@@ -95,6 +108,64 @@ public class LoginService {
 //			authInfo.setPermissions(permissionInfos.stream().distinct().collect(Collectors.toList()));
 //		}
 		
+		return authInfo;
+	}
+
+	/**
+	 * 系统账号登录
+	 *
+	 * @param loginRequest 登录请求
+	 * @return
+	 */
+	public AuthInfo userLogin(LoginRequest loginRequest) {
+		/*
+		 * 验证登录账号密码
+		 */
+		LoginUserRequest userLoginRequest = new LoginUserRequest();
+		userLoginRequest.setMobile(loginRequest.getAccount());
+		userLoginRequest.setPassword(loginRequest.getPassword());
+		DubboResponse<UserResponse> response = userDubboService.userLogin(userLoginRequest);
+
+		// 获取登录用户信息，登录失败时抛出异常
+		UserResponse loginResponse = data(response);
+		/*
+		 * 获取用户角色&权限列表
+		 */
+		AdminUserRoleRequest adminUserRoleRequest = new AdminUserRoleRequest();
+		adminUserRoleRequest.setUserId(loginResponse.getUserId());
+		DubboResponse<List<AdminUserRoleResponse>> userRoleResponse = userRoleDubboService.queryAdminUserRoleByUserId(adminUserRoleRequest);
+		List<AdminUserRoleResponse> userRoles = data(userRoleResponse);
+
+		AuthInfo authInfo = new AuthInfo();
+		authInfo.setUserId(loginResponse.getUserId());
+		authInfo.setUserName(loginResponse.getUserName());
+		authInfo.setEmail(loginRequest.getAccount());
+		authInfo.setRoles(userRoles.stream().map(item -> {
+			RoleInfo roleInfo = new RoleInfo();
+			roleInfo.setRoleId(item.getRoleId());
+			roleInfo.setRoleName(item.getRoleName());
+			return  roleInfo ;
+		}).collect(Collectors.toList()));
+		/*
+		 * 创建token
+		 */
+		log.info("authInfo：{}", authInfo);
+		OAuth2Authentication auth2Authentication = convertAuthentication("operation", authInfo);
+		OAuth2AccessToken accessToken = authorizationServerTokenServices.createAccessToken(auth2Authentication);
+		// 返回认证信息
+		String token = "bearer ".concat(accessToken.getValue());
+		authInfo.setToken(token);
+
+//		List<AdminPermissionPoJo> permissionList = new ArrayList<>();
+//		if (userRoles.getPermissions() != null) {
+//			userRoles.getPermissions().forEach((k,v) -> {
+//				permissionList.addAll(v);
+//			});
+//			List<PermissionInfo> permissionInfos = permissionList.stream().map(PermissionInfo::new).collect(Collectors.toList());
+//			// permission去重
+//			authInfo.setPermissions(permissionInfos.stream().distinct().collect(Collectors.toList()));
+//		}
+
 		return authInfo;
 	}
 	

@@ -47,7 +47,7 @@ public class SignInController {
 	@PostMapping(value = "/signIn")
 	public RestResponse<AuthInfo> login(@Valid @RequestBody LoginRequest loginRequest) {
 		// 登录
-		AuthInfo authInfo = loginService.login(loginRequest);
+		AuthInfo authInfo = loginService.userLogin(loginRequest);
 		
 		return ok(authInfo);
 	}

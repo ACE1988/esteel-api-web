@@ -5,6 +5,7 @@ import io.swagger.annotations.ApiModelProperty;
 import lombok.Data;
 
 import java.io.Serializable;
+import java.util.List;
 
 /**
  * 登录认证信息
@@ -45,12 +46,12 @@ public class AuthInfo implements Serializable {
 	@ApiModelProperty("邮箱")
 	private String email;
 	
-//	/**
-//	 * 角色列表
-//	 */
-//	@ApiModelProperty("角色列表")
-//	private List<RoleInfo> roles;
-//
+	/**
+	 * 角色列表
+	 */
+	@ApiModelProperty("角色列表")
+	private List<RoleInfo> roles;
+
 //	/**
 //	 * 权限列表
 //	 */

@@ -1,8 +1,8 @@
 package com.esteel.web.sevice.user;
 
-import com.esteel.user.service.AdminUserDubboService;
-import com.esteel.user.service.request.admin.AdminUserRequest;
-import com.esteel.user.service.response.admin.AdminUserResponse;
+import com.esteel.admin.service.AdminUserDubboService;
+import com.esteel.admin.service.request.user.AdminUserRequest;
+import com.esteel.admin.service.response.user.AdminUserResponse;
 import com.esteel.web.pojo.util.PageResponseTransfer;
 import org.apache.dubbo.config.annotation.Reference;
 import org.springframework.stereotype.Service;

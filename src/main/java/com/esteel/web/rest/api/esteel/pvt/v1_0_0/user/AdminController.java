@@ -6,8 +6,8 @@ import static com.esteel.rest.common.RestResponse.ok;
 
 import com.esteel.common.core.Page;
 import com.esteel.rest.security.User;
-import com.esteel.user.service.AdminUserDubboService;
-import com.esteel.user.service.request.admin.AdminUserRequest;
+import com.esteel.admin.service.AdminUserDubboService;
+import com.esteel.admin.service.request.user.AdminUserRequest;
 import com.esteel.web.pojo.approve.authority.AccountInfo;
 import com.esteel.web.sevice.user.AdminService;
 import io.swagger.annotations.*;

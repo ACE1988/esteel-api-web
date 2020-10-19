@@ -1,6 +1,6 @@
 package com.esteel.web.pojo.approve.authority;
 
-import com.esteel.user.service.response.admin.AdminUserResponse;
+import com.esteel.admin.service.response.user.AdminUserResponse;
 import io.swagger.annotations.ApiModel;
 import io.swagger.annotations.ApiModelProperty;
 import lombok.Data;

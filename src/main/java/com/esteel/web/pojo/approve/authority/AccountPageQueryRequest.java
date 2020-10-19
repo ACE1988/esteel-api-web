@@ -2,7 +2,7 @@ package com.esteel.web.pojo.approve.authority;
 
 import java.io.Serializable;
 
-import com.esteel.user.service.request.admin.AdminUserRequest;
+import com.esteel.admin.service.request.user.AdminUserRequest;
 import org.springframework.beans.BeanUtils;
 
 

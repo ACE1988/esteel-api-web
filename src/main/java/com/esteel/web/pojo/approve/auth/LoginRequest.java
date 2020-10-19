@@ -5,7 +5,7 @@ import java.io.Serializable;
 import javax.validation.constraints.NotBlank;
 import javax.validation.constraints.Size;
 
-import com.esteel.user.service.request.admin.AdminUserLoginRequest;
+import com.esteel.admin.service.request.user.AdminUserLoginRequest;
 import org.springframework.beans.BeanUtils;
 
 
