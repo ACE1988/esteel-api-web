@@ -90,6 +90,7 @@ public class AdminController {
 			@ApiParam(value = "页大小", required = true) @NotNull(message = "页大小未填写") @RequestParam(value = "page_size", required = false) Integer pageSize) {
 
 		String name = principal.getName();
+		System.out.print(name);
 		return execute(() -> {
 			AdminUserRequest request = new AdminUserRequest();
 			request.setEmail(email);

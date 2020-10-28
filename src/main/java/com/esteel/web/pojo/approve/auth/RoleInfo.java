@@ -1,6 +1,5 @@
 package com.esteel.web.pojo.approve.auth;
 
-import com.esteel.autoconfigure.EnableMQ;
 import lombok.Data;
 import lombok.EqualsAndHashCode;
 import lombok.ToString;
@@ -19,7 +18,12 @@ import java.io.Serializable;
 @ToString(callSuper = true)
 public class RoleInfo implements Serializable {
 
-    private Long roleId ;
+    /**
+	 * 
+	 */
+	private static final long serialVersionUID = 1L;
+
+	private Long roleId ;
 
     private String roleName ;
 }

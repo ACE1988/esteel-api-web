@@ -45,7 +45,8 @@ public class CommonExcelView extends AbstractXlsxView {
         String fileName = String.format("%s-%s.xlsx", "no-content", DateUtils.getFormatDateTime(new Date(), DateUtils.DATE_TIMESTAMP_SHORT_FORMAT));
         response.setHeader("Content-Disposition", String.format("attachment; filename=%s", URLEncoder.encode(fileName, "UTF-8")));
         //noinspection unchecked
-        List list = List.class.cast(model.get(MODEL));
+        @SuppressWarnings("unchecked")
+		List<Field> list = List.class.cast(model.get(MODEL));
         if (CollectionUtils.isEmpty(list)) {
             new Spreadsheet(workbook).newSheet("No data.");
             return;

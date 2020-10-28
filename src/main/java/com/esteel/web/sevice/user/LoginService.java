@@ -42,6 +42,7 @@ import lombok.extern.slf4j.Slf4j;
  *
  * @since 2020-01-17 17:29:40
  */
+@SuppressWarnings("deprecation")
 @Slf4j
 @Service
 public class LoginService {
@@ -182,6 +183,7 @@ public class LoginService {
 		return new OAuth2Authentication(request, token);
 	}
 
+	@SuppressWarnings("unused")
 	private Collection<? extends GrantedAuthority> getUserPermissions(List<String> permisssions) {
 		return permisssions.stream().map(SimpleGrantedAuthority::new).collect(Collectors.toList());
 	}
