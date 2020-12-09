@@ -5,9 +5,6 @@
 ## 自营业务-新增线路
 **Path：** /business/contractLine/add
 **Method：** POST
-**Desc：**
-
-自营业务-新增线路
 **RequestBody**
 
 | name | type | desc |
