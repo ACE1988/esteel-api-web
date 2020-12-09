@@ -3,26 +3,11 @@
 
 ---
 ## 自营业务-新增线路
-
-### BASIC
-
 **Path：** /business/contractLine/add
-
 **Method：** POST
-
 **Desc：**
 
 自营业务-新增线路
-
-### REQUEST
-
-
-**Headers：**
-
-| name  |  value  |  required  | desc  |
-| ------------ | ------------ | ------------ | ------------ |
-| Content-Type | application/json | YES |  |
-
 **RequestBody**
 
 | name | type | desc |
@@ -69,14 +54,6 @@
 
 
 ### RESPONSE
-
-**Header：**
-
-| name  |  value  |  required  | desc  |
-| ------------ | ------------ | ------------ | ------------ | ------------ |
-| content-type | application/json;charset=UTF-8 | NO |   |
-
-**Body：**
 
 | name | type | desc |
 | ------------ | ------------ | ------------ |
